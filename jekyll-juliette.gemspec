@@ -13,6 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/Magoc-s/jekyll-juliette"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.6.0"
+  spec.add_dependency "jekyll", "~> 4.2"
+  spec.add_dependency "fileutils", "~> 1.5.0"
 
   spec.metadata["allowed_push_host"] = "https://example.com"
 

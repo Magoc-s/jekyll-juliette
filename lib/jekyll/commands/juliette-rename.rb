@@ -5,7 +5,6 @@ module Jekyll
         class SmartRename < Jekyll::Command
             class << self
                 def init_with_program(prog)
-                    site = Jekyll.sites.first
                     prog.command(:rename) do |c|
                         c.syntax "rename [options]"
                         c.description 'Rename a file in a Jekyll Site and modify all references.'

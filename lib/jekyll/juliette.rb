@@ -2,3 +2,4 @@
 
 require_relative "juliette/version"
 require 'jekyll/commands/juliette-rename.rb'
+require 'jekyll/commands/juliette-peruse.rb'

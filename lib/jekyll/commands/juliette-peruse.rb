@@ -65,6 +65,9 @@ module Jekyll
                                     Jekyll.logger.info warning
                                 end
                             end
+                            if git_issues.length == 0 and to_output.length == 0 then
+                                Jekyll.logger.info 'Nothing to report here! All files are less than 1MB.'
+                            end
                         end
                     end
                 end

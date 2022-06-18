@@ -69,10 +69,11 @@ module Jekyll
                                     end
                                     line
                                 end
+                                if (instances == 0) then next end
                                 File.open(page, 'w') do |file|
                                     file.puts lines
                                 end
-                                if not instances == 0 then Jekyll.logger.info 'Corrected %d occurances in %s.' % [instances, page] end
+                                Jekyll.logger.info 'Corrected %d occurances in %s.' % [instances, page]
                             end
                         end
                     end

@@ -15,11 +15,25 @@ module Jekyll
                 
                         c.action do |args, options|
                             source_path = FileUtils.pwd
-                            file_path = source_path + options['path']
-                            new_path = source_path + options['new_name']
-                            Jekyll.logger.info 'Looking to rename/move ' + file_path
+                            provided_path = options['path']
+                            chosen_path = options['new_name']
+                            if provided_path == nil then
+                                Jekyll.logger.error 'No provided path (-p).'
+                                Jekyll.logger.warn 'Usage: rename -p <PATH> -n <NEW_PATH>.'
+                                raise Errors::FatalException,
+                                    "No provided path (-p)."
+                            end
+                            if chosen_path == nil then
+                                Jekyll.logger.error 'No output path (-n).'
+                                Jekyll.logger.warn 'Usage: rename -p <PATH> -n <NEW_PATH>.'
+                                raise Errors::FatalException,
+                                    "No output path (-n)."
+                            end
+                            file_path = source_path + '/' + provided_path
+                            new_path = source_path + '/' + chosen_path
+                            # Jekyll.logger.info 'Looking to rename/move ' + file_path + ' to ' + new_path
 
-                            if not File.exists?(file_path) do
+                            if not File.exists?(file_path)
                                 raise Errors::FatalException,
                                     "File not found."
                             end
@@ -33,7 +47,7 @@ module Jekyll
 
                             FileUtils.mkdir_p string_dir_path unless Dir.exists?(string_dir_path)
                             FileUtils.cp(file_path, string_dir_path + "/" + file_name)
-                            if File.exists?(string_dir_path + "/" + file_name) do
+                            if File.exists?(string_dir_path + "/" + file_name)
                                 FileUtils.rm file_path
                             else
                                 raise Errors::FatalException,
@@ -46,16 +60,19 @@ module Jekyll
                             # Only picks md or html pages!
                             pages = Dir.glob('**/*.{md,html}')
                             for page in pages do
+                                if page.include? '_site/' then next end
                                 instances = 0
                                 lines = IO.readlines(page).map do |line|
-                                    if line.include? options['path'] do
-                                        line.sub(options['path'], options['new_path'])
+                                    if line.include? provided_path
+                                        line = line.sub(provided_path, chosen_path)
                                         instances += 1
-                                    else
-                                        line
                                     end
-                                    Jekyll.logger.info 'Corrected %d occurances in %s.' % [instances, page] unless (instances == 0) end
+                                    line
                                 end
+                                File.open(page, 'w') do |file|
+                                    file.puts lines
+                                end
+                                if not instances == 0 then Jekyll.logger.info 'Corrected %d occurances in %s.' % [instances, page] end
                             end
                         end
                     end

@@ -57,8 +57,9 @@ module Jekyll
                             Jekyll.logger.info 'Renamed/moved file.'
                             
                             # Time consuming! Has to iterate over every line of every page!
-                            # Only picks md or html pages!
-                            pages = Dir.glob('**/*.{md,html}')
+                            # Only picks md, yml or html pages!
+                            # ignores _site collection
+                            pages = Dir.glob('**/*.{md,html,yml,yaml}')
                             for page in pages do
                                 if page.include? '_site/' then next end
                                 instances = 0

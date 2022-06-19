@@ -2,7 +2,7 @@ require 'fileutils'
 
 module Jekyll
     module Commands
-        class SmartRename < Jekyll::Command
+        class Peruse < Jekyll::Command
             class << self
                 def init_with_program(prog)
                     prog.command(:peruse) do |c|

@@ -1,0 +1,1 @@
+# Use ImageMagick ruby bindings to convert and compress pngs? TODO
